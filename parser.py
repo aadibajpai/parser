@@ -78,7 +78,7 @@ def e():
     """
     prod = p()
 
-    # need to check to very if it is P + E
+    # need to check to verify if it is P + E
     if expr and expr[0] == "+":
         match("+")
         ex = e()
