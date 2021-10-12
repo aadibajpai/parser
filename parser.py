@@ -42,6 +42,7 @@ def parser():
     global expr
 
     while expr != "q":
+        print(f"expression: {expr}")
         expr = expr.replace(" ", "")  # strip whitespace
 
         try:
@@ -49,18 +50,18 @@ def parser():
 
             # valid iff no error and all of expression consumed
             print("valid" if not expr else f"invalid, {expr=}")
-            print()
             print(f"parse tree: {ex}")  # the generated tree
             print()
 
             generate(ex)
-            print()
 
         except (IndexError, ValueError):
             # handle invalid expressions
             print("invalid")
 
+        print()
         expr = input("enter your expression or q to exit: ")
+        print()
 
 
 def advance(offset=1):
