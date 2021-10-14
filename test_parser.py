@@ -23,5 +23,5 @@ expr_trees = [
 
 
 @pytest.mark.parametrize("input, expected", expr_trees)
-def test_asm(input, expected):
+def test_parse_tree(input, expected):
     assert Parse(input).parser() == expected
