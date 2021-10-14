@@ -8,24 +8,29 @@ class Parse:
     def __init__(self, expr):
         self.expr = expr
 
-    def generate(self, expr):
+    @classmethod
+    def generate(self, node):
         """
         generate assembly code for an expression
         traverses the parse "tree" recursively
         e.g. for (12 * (2 + 4) * 3), the tree looks like
         (12, '*', ((2, '+', 4), '*', 3))
         """
-        # check for int and string since python doesn't have pattern matching
-        if isinstance(expr, int):
-            print(f".load {expr}")
+        # invalid expression
+        if not node:
             return
 
-        elif isinstance(expr, str):
-            print(".mult" if expr == "*" else ".add")
+        # check for int and string since python doesn't have pattern matching
+        if isinstance(node, int):
+            print(f".load {node}")
+            return
+
+        elif isinstance(node, str):
+            print(".mult" if node == "*" else ".add")
             return
 
         # if we're here then we have a triplet
-        left, middle, right = expr
+        left, middle, right = node
 
         # post order traversal
         self.generate(left)
@@ -37,27 +42,20 @@ class Parse:
         the actual parsing function,
         processes the expression and handles getting the next expression
         """
-        while self.expr != "q":
-            print(f"expression: {self.expr}")
-            self.expr = self.expr.replace(" ", "")  # strip whitespace
+        self.expr = self.expr.replace(" ", "")  # strip whitespace
 
-            try:
-                ex = self.e()  # call e since it's the first production rule
+        try:
+            ex = self.e()  # call e since it's the first production rule
 
-                # valid iff no error and all of expression consumed
-                print("valid" if not self.expr else f"invalid, {self.expr=}")
-                print(f"parse tree: {ex}")  # the generated tree
-                print()
+            # valid iff no error and all of expression consumed
+            if self.expr:
+                return None
 
-                self.generate(ex)
+            return ex
 
-            except (IndexError, ValueError):
-                # handle invalid expressions
-                print("invalid")
-
-            print()
-            self.expr = input("enter your expression or q to exit: ")
-            print()
+        except (IndexError, ValueError):
+            # handle invalid expressions
+            return None
 
     def advance(self, offset=1):
         """
@@ -140,4 +138,4 @@ class Parse:
 
 
 if __name__ == "__main__":
-    Parse(input("enter your expression or q to exit: ")).parser()
+    Parse.generate(Parse(input("enter your expression or q to exit: ")).parser())
