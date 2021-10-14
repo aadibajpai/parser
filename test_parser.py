@@ -1,6 +1,6 @@
 import pytest
 
-from parses import Parse
+from Parse import Parse
 
 # the expression and the expected tree for it
 # easier to test than valid assembly that depends on this anyway
